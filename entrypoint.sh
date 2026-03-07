@@ -36,7 +36,17 @@ timeout 3 bash -c 'while ! sudo -u sunshine pactl info >/dev/null 2>&1; do sleep
 echo "[Init] Starting VRAM Monitor..."
 /usr/local/bin/vram-monitor.sh &
 
-# 6. Sunshine起動
+# 6. Sunshineの設定ファイル生成（初回のみ）
+SUNSHINE_CONF="/home/sunshine/.config/sunshine/sunshine.conf"
+if [ ! -f "$SUNSHINE_CONF" ]; then
+  echo "[Init] Creating default sunshine.conf..."
+  cat > "$SUNSHINE_CONF" << 'EOF'
+origin_web_ui_allowed = wan
+EOF
+  chown sunshine:sunshine "$SUNSHINE_CONF"
+fi
+
+# 7. Sunshine起動
 echo "[Init] Starting Sunshine Streaming Server..."
 sudo -u sunshine bash -c 'PULSE_SERVER=unix:/tmp/pulseaudio.socket sunshine &'
 
