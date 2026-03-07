@@ -11,7 +11,7 @@ echo "[Init] Permissions configured for sunshine user."
 
 # 2. Xorg (headless, dummy driver - uinput入力イベントを受け取れる)
 echo "[Init] Starting Xorg (headless dummy)..."
-Xorg :99 -config /etc/X11/xorg.conf -nolisten tcp -noreset &
+Xorg :99 -config /etc/X11/xorg.conf -nolisten tcp -noreset -ac &
 export DISPLAY=:99
 
 echo "[Wait] Waiting for Xorg socket..."
