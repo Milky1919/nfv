@@ -51,7 +51,7 @@ fi
 
 # 7. Sunshine起動
 echo "[Init] Starting Sunshine Streaming Server..."
-sudo -u sunshine bash -c 'PULSE_SERVER=unix:/tmp/pulseaudio.socket sunshine &'
+sudo -u sunshine bash -c 'DISPLAY=:99 PULSE_SERVER=unix:/tmp/pulseaudio.socket sunshine &'
 
 # Sunshineの初期化待機（API疎通確認やログ待機は暫定でSleep）
 sleep 5
