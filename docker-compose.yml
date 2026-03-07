@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  sunshine:
+    build: .
+    container_name: nfv_sunshine
+    network_mode: "host"
+    runtime: nvidia
+    restart: unless-stopped
+    cpuset: "0-3"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all,compute,video,utility
+      - TZ=Asia/Tokyo
+      - CHROME_START_URL=https://www.netflix.com/browse
+    volumes:
+      - sunshine_config:/home/sunshine/.config/sunshine
+      - chrome_profile:/home/sunshine/.config/google-chrome
+      - /dev/shm:/dev/shm
+    deploy:
+      resources:
+        limits:
+          memory: 4g
+    cap_add:
+      - SYS_ADMIN
+    ipc: host
+    healthcheck:
+      test: [ "CMD-SHELL", "pgrep -f 'sunshine' && pgrep -f 'chrome' && pgrep -f 'Xvfb' && sudo -u sunshine pactl info" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  sunshine_config:
+  chrome_profile:
