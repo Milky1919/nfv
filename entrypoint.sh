@@ -36,7 +36,10 @@ timeout 3 bash -c 'while ! sudo -u sunshine pactl info >/dev/null 2>&1; do sleep
 echo "[Init] Starting VRAM Monitor..."
 /usr/local/bin/vram-monitor.sh &
 
-# 6. Sunshineの設定ファイル生成（初回のみ）
+# 6. /dev/uinput の権限開放（Sunshineの仮想入力デバイス作成に必要）
+chmod 666 /dev/uinput || true
+
+# 7. Sunshineの設定ファイル生成（初回のみ）
 SUNSHINE_CONF="/home/sunshine/.config/sunshine/sunshine.conf"
 if [ ! -f "$SUNSHINE_CONF" ]; then
   echo "[Init] Creating default sunshine.conf..."
