@@ -3,6 +3,7 @@ services:
     build: .
     container_name: nfv_sunshine
     network_mode: "host"
+    privileged: true
     runtime: nvidia
     restart: unless-stopped
     cpuset: "0-3"
