@@ -20,8 +20,11 @@ services:
       resources:
         limits:
           memory: 4g
+    devices:
+      - /dev/uinput:/dev/uinput
     cap_add:
       - SYS_ADMIN
+      - NET_ADMIN
     ipc: host
     healthcheck:
       test: [ "CMD-SHELL", "pgrep -f 'sunshine' && pgrep -f 'chrome' && pgrep -f 'Xvfb' && sudo -u sunshine pactl info" ]
