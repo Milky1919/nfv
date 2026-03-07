@@ -14,7 +14,7 @@ RUN groupadd -f render && \
 RUN apt-get update && apt-get install -y \
     xvfb fluxbox pulseaudio wget curl unzip git inotify-tools psmisc \
     x11-utils jq ca-certificates sudo arping nano gnupg binutils \
-    libva2 libva-drm2 libva-x11-2 libvdpau1 \
+    libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Google Chromeのインストール
