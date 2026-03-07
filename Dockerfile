@@ -15,7 +15,6 @@ RUN apt-get update && apt-get install -y \
     xvfb fluxbox pulseaudio wget curl unzip git inotify-tools psmisc \
     x11-utils jq ca-certificates sudo arping nano gnupg binutils \
     libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 \
-    xserver-xorg-video-dummy xserver-xorg-input-libinput xserver-xorg-input-evdev \
     && rm -rf /var/lib/apt/lists/*
 
 # Google Chromeのインストール
@@ -28,9 +27,7 @@ RUN mkdir -p /etc/apt/keyrings && \
 # sudoのパスワードなし実行を許可（起動スクリプト内での権限切り替え用）
 RUN echo "sunshine ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# headless Xorg用の設定ファイル配置
-RUN mkdir -p /etc/X11
-COPY xorg.conf /etc/X11/xorg.conf
+
 
 # Widevine L3 DRMモジュールの抽出と配置（公式debから展開）
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \

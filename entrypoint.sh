@@ -9,13 +9,13 @@ mkdir -p /home/sunshine/.config/google-chrome || true
 chown -R sunshine:sunshine /home/sunshine || true
 echo "[Init] Permissions configured for sunshine user."
 
-# 2. Xorg (headless, dummy driver - uinput入力イベントを受け取れる)
-echo "[Init] Starting Xorg (headless dummy)..."
-Xorg :99 -config /etc/X11/xorg.conf -nolisten tcp -noreset -ac &
+# 2. Xvfb (仮想ディスプレイ、-acでアクセス制御無効化)
+echo "[Init] Starting Xvfb..."
+sudo -u sunshine Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp -ac &
 export DISPLAY=:99
 
-echo "[Wait] Waiting for Xorg socket..."
-timeout 10 bash -c 'while [ ! -S /tmp/.X11-unix/X99 ]; do sleep 0.1; done' || { echo "Xorg socket timeout"; exit 1; }
+echo "[Wait] Waiting for Xvfb socket..."
+timeout 5 bash -c 'while [ ! -S /tmp/.X11-unix/X99 ]; do sleep 0.1; done' || { echo "Xvfb socket timeout"; exit 1; }
 
 # 3. Fluxbox (ウィンドウマネージャー)
 echo "[Init] Starting Fluxbox..."
