@@ -12,7 +12,8 @@ RUN groupadd -f render && \
     usermod -aG video,audio,render,input sunshine
 
 # 依存パッケージおよびツール群のインストール
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     xserver-xorg-core xserver-xorg-video-dummy xserver-xorg-input-libinput \
     udev fluxbox pulseaudio wget curl unzip git inotify-tools psmisc \
     x11-utils jq ca-certificates sudo arping nano gnupg binutils \
