@@ -18,7 +18,8 @@
       "Bash(ssh:*)",
       "Bash(git add:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nfix: Update Fluxbox menu Chrome command to enable VSync\n\n- Change --disable-gpu-vsync to --enable-gpu-vsync\n- Add --disable-frame-rate-limit and --enable-zero-copy\n- Fix ublock-origin to ublock-lite for consistency\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix: Correct uBlock extension path from ublock-lite to ublock-origin\n\nCritical fix: Dockerfile installs uBlock Origin \\(Full MV2\\) to /opt/extensions/ublock-origin,\nbut chrome.desktop and Fluxbox menu were referencing non-existent ublock-lite path.\nThis caused Chrome to fail loading the extension.\n\nChanges:\n- chrome.desktop: Fix extension path to match installed location\n- entrypoint.sh Fluxbox menu: Fix extension path to match installed location\n- entrypoint.sh main startup: Already correct \\(ublock-origin\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix: Correct uBlock extension path from ublock-lite to ublock-origin\n\nCritical fix: Dockerfile installs uBlock Origin \\(Full MV2\\) to /opt/extensions/ublock-origin,\nbut chrome.desktop and Fluxbox menu were referencing non-existent ublock-lite path.\nThis caused Chrome to fail loading the extension.\n\nChanges:\n- chrome.desktop: Fix extension path to match installed location\n- entrypoint.sh Fluxbox menu: Fix extension path to match installed location\n- entrypoint.sh main startup: Already correct \\(ublock-origin\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit:*)"
     ]
   }
 }
