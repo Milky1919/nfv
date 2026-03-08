@@ -88,6 +88,7 @@ google-chrome \
   --no-first-run \
   --disable-gpu-vsync \
   --enable-features=VaapiVideoDecoder \
+  --enable-logging --v=1 \
   --load-extension='${EXTENSIONS}' &
 "
 
