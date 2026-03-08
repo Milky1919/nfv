@@ -60,9 +60,9 @@
         e.preventDefault();
         const v = getVideo();
         if (v && v.videoWidth > 0) {
-          resText.textContent = \`📺 \${v.videoWidth} x \${v.videoHeight}p\`;
+          resText.textContent = `📺 ${v.videoWidth} x ${v.videoHeight}p`;
         } else {
-          resText.textContent = \`📺 Loading...\`;
+          resText.textContent = `📺 Loading...`;
         }
         resText.style.display = 'block';
         setTimeout(() => { resText.style.display = 'none'; }, 4000);
@@ -90,7 +90,7 @@
     hideTimer = setTimeout(() => {
       uiContainer.style.opacity = '0';
       uiContainer.style.pointerEvents = 'none';
-      if(resText) resText.style.display = 'none';
+      if (resText) resText.style.display = 'none';
     }, 3500);
   }
 

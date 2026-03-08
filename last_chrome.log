@@ -1,0 +1,33 @@
+[146:170:0308/032946.764090:WARNING:chrome/browser/extensions/external_pref_loader.cc:296] You are using an old-style extension deployment method (external_extensions.json), which will soon be deprecated. (see http://developer.chrome.com/docs/extensions/how-to/distribute/install-extensions)
+[186:186:0308/032946.798629:WARNING:ui/gfx/linux/gbm_support_x11.cc:48] dri3 extension not supported.
+[146:146:0308/032946.811889:WARNING:chrome/browser/extensions/external_provider_impl.cc:284] Malformed extension dictionary: key abcdefghijklmnopqrstuvwxyz123456 is not a valid id.
+  extension id:           (none)
+  effective extension id: (none)
+  extension id:           (none)
+  effective extension id: (none)
+  extension id:           (none)
+  effective extension id: (none)
+  extension id:           (none)
+  effective extension id: (none)
+  extension id:           (none)
+  effective extension id: (none)
+  extension id:           (none)
+  effective extension id: (none)
+  extension id:           (none)
+  effective extension id: (none)
+  extension id:           (none)
+  effective extension id: (none)
+  extension id:           (none)
+  effective extension id: (none)
+  extension id:           (none)
+  effective extension id: (none)
+[220:1:0308/032949.059158:VERBOSE1:extensions/renderer/script_context.cc:162] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+[220:1:0308/032949.059218:VERBOSE1:extensions/renderer/script_context.cc:162] Destroyed context for extension
+  extension id: 
+  effective extension id: 
+  extension id:           nmmhkkegccagdldgiimedpiccmgmieda
+  effective extension id: nmmhkkegccagdldgiimedpiccmgmieda
+  extension id:           (none)
+  effective extension id: (none)

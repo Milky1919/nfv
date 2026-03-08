@@ -70,27 +70,38 @@ sudo -u sunshine bash -c 'DISPLAY=:99 sunshine &'
 # Sunshineの初期化待機（API疎通確認やログ待機は暫定でSleep）
 sleep 5
 
-# 10. Google Chrome (キオスクモード)
-echo "[Init] Starting Google Chrome with Extensions..."
+# 10. Google Chrome (Xvfbを使用した非Headlessモードによる標準的な拡張機能読み込み)
+echo "[Init] Starting Google Chrome directly with --load-extension via Xvfb..."
 # 環境変数読み込み
 START_URL=${CHROME_START_URL:-"https://www.netflix.com/browse"}
+
+# 必要な全拡張機能のパスをカンマ区切りで作成
 EXTENSIONS="/opt/extensions/ublock-lite,/opt/extensions/netflix-1080p,/opt/extensions/auto-skip,/opt/extensions/video-resolution-monitor"
 
+# Chrome起動（Xvfbを使用して仮想ディスプレイ上で通常モードとして実行。headlessで無効にされていた拡張機能読み込みを有効化）
 sudo -u sunshine bash -c "
 export DISPLAY=:99
 export LIBVA_DRIVER_NAME=nvidia
 export VDPAU_DRIVER=nvidia
+
+# --no-sandbox と --disable-gpu-sandbox はコンテナ内で必須。--kiosk等がないとフルスクリーンにならないがUIはデバッグで見れる
+xvfb-run --server-args='-screen 0 1920x1080x24' \
 google-chrome \
-  --kiosk '${START_URL}' \
+  '${START_URL}' \
+  --load-extension='${EXTENSIONS}' \
+  --window-position=0,0 \
+  --window-size=1920,1080 \
   --force-device-scale-factor=1.0 \
   --disable-features=OverlayScrollbar \
   --disable-infobars \
-  --no-first-run \
   --disable-gpu-vsync \
   --enable-features=VaapiVideoDecoder \
-  --enable-logging --v=1 \
-  --load-extension='${EXTENSIONS}' &
+  --no-sandbox \
+  --disable-gpu-sandbox \
+  --enable-logging \
+  --v=1 &
 "
+echo "[Init] Chrome started."
 
 echo "[Init] All services verified and dispatched."
 

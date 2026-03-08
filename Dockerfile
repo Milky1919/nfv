@@ -17,7 +17,7 @@ RUN set -x && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     xserver-xorg-core xserver-xorg-video-dummy xserver-xorg-input-libinput \
     udev fluxbox pulseaudio wget curl unzip git inotify-tools psmisc \
-    x11-utils jq ca-certificates sudo arping nano gnupg binutils \
+    x11-utils jq ca-certificates sudo arping nano gnupg binutils xvfb python3 \
     libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 fonts-noto-cjk xdotool || true && \
     dpkg --configure -a || true && \
     which Xorg udevadm fluxbox pulseaudio && \
@@ -32,6 +32,8 @@ RUN mkdir -p /etc/apt/keyrings && \
     dpkg --configure -a || true && \
     which google-chrome && \
     rm -rf /var/lib/apt/lists/*
+
+# (Old Enterprise Policy config removed as we no longer use it)
 
 # sudoのパスワードなし実行を許可（起動スクリプト内での権限切り替え用）
 RUN echo "sunshine ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
@@ -65,8 +67,7 @@ RUN curl -s https://api.github.com/repos/uBlockOrigin/uBOL-home/releases/latest 
 
 # Extensions 4: Video Resolution Monitor (custom extension for UI)
 COPY video-resolution-monitor /opt/extensions/video-resolution-monitor
-
-# スクリプトのコピーと権限付与
+# (CRX packaging step removed as we use --load-extension instead)
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY vram-monitor.sh /usr/local/bin/vram-monitor.sh
 RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh /usr/local/bin/vram-monitor.sh && \
