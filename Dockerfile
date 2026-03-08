@@ -15,11 +15,11 @@ RUN groupadd -f render && \
 RUN set -x && \
     apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    xserver-xorg-core xserver-xorg-video-dummy xserver-xorg-input-libinput \
+    xserver-xorg-core xserver-xorg-video-dummy xserver-xorg-video-nvidia-525 xserver-xorg-input-libinput \
     udev fluxbox pulseaudio wget curl unzip git inotify-tools psmisc \
-    x11-utils jq ca-certificates sudo arping nano gnupg binutils xvfb python3 \
+    x11-utils mesa-utils jq ca-certificates sudo arping nano gnupg binutils xvfb python3 \
     libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 fonts-noto-cjk xdotool feh \
-    pcmanfm picom || true && \
+    pcmanfm picom nvidia-utils-525 libnvidia-gl-525 || true && \
     dpkg --configure -a || true && \
     which Xorg udevadm fluxbox pulseaudio && \
     echo "Package installation completed - binaries verified" && \
