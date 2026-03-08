@@ -7,7 +7,9 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:games-on-whales.github.io)",
       "WebFetch(domain:neko.m1k1o.net)",
-      "WebFetch(domain:hub.docker.com)"
+      "WebFetch(domain:hub.docker.com)",
+      "Bash(docker exec:*)",
+      "Bash(docker ps:*)"
     ]
   }
 }
