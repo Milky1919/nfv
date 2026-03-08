@@ -8,6 +8,12 @@ mkdir -p /home/sunshine/.config/sunshine || true
 mkdir -p /home/sunshine/.config/google-chrome || true
 chown -R sunshine:sunshine /home/sunshine/.config || true
 chown -R sunshine:sunshine /home/sunshine || true
+
+# XDG_RUNTIME_DIR の準備（Sunshine が必要とする）
+mkdir -p /run/user/1001 || true
+chown sunshine:sunshine /run/user/1001 || true
+chmod 700 /run/user/1001 || true
+
 echo "[Init] Permissions configured for sunshine user."
 
 # 2. udevd起動（inputtinoが作成する仮想入力デバイスの検出に必須）
@@ -96,14 +102,31 @@ SUNSHINE_CONF="/home/sunshine/.config/sunshine/sunshine.conf"
 if [ ! -f "$SUNSHINE_CONF" ]; then
   echo "[Init] Creating default sunshine.conf..."
   cat > "$SUNSHINE_CONF" << 'EOF'
+# Web UI アクセス設定
 origin_web_ui_allowed = wan
+
+# キャプチャ設定（X11 を明示的に指定）
+capture = x11
+
+# エンコーダー設定（NVIDIA GPU 使用）
+encoder = nvenc
+adapter_name = /dev/dri/card0
+
+# 出力設定
+output_name = 0
 EOF
   chown sunshine:sunshine "$SUNSHINE_CONF"
 fi
 
 # 10. Sunshine起動（DISPLAY設定はXorgの:99を使用、X11モードを強制）
 echo "[Init] Starting Sunshine Streaming Server..."
-sudo -u sunshine bash -c 'DISPLAY=:99 WAYLAND_DISPLAY="" sunshine &'
+sudo -u sunshine bash -c 'DISPLAY=:99 WAYLAND_DISPLAY="" XDG_RUNTIME_DIR=/run/user/1001 sunshine > /tmp/sunshine.log 2>&1 &'
+sleep 2
+# Sunshine が起動したか確認
+if ! pgrep -x sunshine > /dev/null; then
+  echo "[Error] Sunshine failed to start. Check /tmp/sunshine.log for details."
+  cat /tmp/sunshine.log || true
+fi
 
 # Sunshineの初期化待機（API疎通確認やログ待機は暫定でSleep）
 sleep 5

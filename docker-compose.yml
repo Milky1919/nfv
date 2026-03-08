@@ -13,6 +13,9 @@ services:
       - TZ=Asia/Tokyo
       - CHROME_START_URL=https://www.netflix.com/browse
       - SUNSHINE_ORIGIN_WEB_UI_ALLOWED=wan
+      - DISPLAY=:99
+      - WAYLAND_DISPLAY=
+      - XDG_RUNTIME_DIR=/run/user/1001
     volumes:
       - sunshine_config:/home/sunshine/.config/sunshine
       - chrome_profile:/home/sunshine/.config/google-chrome
