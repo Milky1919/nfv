@@ -61,10 +61,10 @@ RUN wget -q https://github.com/Puyodead1/wv-netflix-extension/archive/refs/heads
 # Extensions 2: Netflix-Prime-Auto-Skip (広告・イントロスキップ)
 RUN git clone https://github.com/Dreamlinerm/Netflix-Prime-Auto-Skip.git /opt/extensions/auto-skip
 
-# Extensions 3: uBlock Origin Lite (YouTube等向け広告ブロック MV3)
-RUN curl -s https://api.github.com/repos/uBlockOrigin/uBOL-home/releases/latest | jq -r '.assets[] | select(.name | endswith("chromium.zip")) | .browser_download_url' | xargs wget -q -O uBOLite.chromium.zip && \
-    unzip -q uBOLite.chromium.zip -d /opt/extensions/ublock-lite && \
-    rm uBOLite.chromium.zip
+# Extensions 3: uBlock Origin (Full MV2 version for advanced blocking)
+RUN curl -s https://api.github.com/repos/gorhill/uBlock/releases/latest | jq -r '.assets[] | select(.name | test("uBlock0_.*\\\\.chromium\\\\.zip$")) | .browser_download_url' | xargs wget -q -O uBlock0.chromium.zip && \
+    unzip -q uBlock0.chromium.zip -d /opt/extensions/ublock-origin && \
+    rm uBlock0.chromium.zip
 
 # Extensions 4: Video Resolution Monitor (custom extension for UI)
 COPY video-resolution-monitor /opt/extensions/video-resolution-monitor
