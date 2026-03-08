@@ -81,6 +81,7 @@ export DISPLAY=:99
 export LIBVA_DRIVER_NAME=nvidia
 export VDPAU_DRIVER=nvidia
 google-chrome \
+  --user-agent='Mozilla/5.0 (X11; CrOS x86_64 15509.89.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' \
   --kiosk '${START_URL}' \
   --force-device-scale-factor=1.0 \
   --disable-features=OverlayScrollbar \

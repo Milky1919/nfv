@@ -80,12 +80,12 @@
       e.preventDefault();
       const video = getVideoNode();
       if (video && video.videoWidth > 0) {
-        resText.textContent = \`📺 \${video.videoWidth} x \${video.videoHeight}p\`;
+        resText.textContent = `📺 ${video.videoWidth} x ${video.videoHeight}p`;
       } else {
-        resText.textContent = \`📺 Loading...\`;
+        resText.textContent = `📺 Loading...`;
       }
       resText.style.display = 'block';
-      
+
       setTimeout(() => {
         resText.style.display = 'none';
       }, 4000);
@@ -108,7 +108,7 @@
   setInterval(() => {
     initOverlay();
     if (!overlayContainer) return;
-    
+
     // Ensure it's always appended to the right target (fullscreen or document)
     const currentTarget = document.fullscreenElement || document.documentElement;
     if (overlayContainer.parentNode !== currentTarget) {
@@ -117,52 +117,52 @@
 
     const video = getVideoNode();
     if (!video) {
-        // If no video, make sure button is hidden
-        overlayContainer.style.opacity = '0';
-        overlayContainer.style.pointerEvents = 'none';
-        return;
+      // If no video, make sure button is hidden
+      overlayContainer.style.opacity = '0';
+      overlayContainer.style.pointerEvents = 'none';
+      return;
     }
 
     let isUiActive = false;
     let cursorIsNone = false;
-    
+
     if (video.paused) {
-        isUiActive = true;
+      isUiActive = true;
     } else {
-        let el = video;
-        while(el && el !== document) {
-            const style = window.getComputedStyle(el);
-            if (style.cursor === 'none') {
-                cursorIsNone = true;
-                break;
-            }
-            if (el.className && typeof el.className === 'string' && el.className.includes('inactive')) {
-                cursorIsNone = true;
-                break;
-            }
-            el = el.parentNode;
-        }
-
-        if (document.body.className && typeof document.body.className === 'string' && 
-            (document.body.className.includes('inactive') || document.body.className.includes('hide-cursor'))) {
-            cursorIsNone = true;
-        }
-
-        // Often elements have aria-hidden true when UI is inactive
-        if (document.querySelector('.controls-inactive, .vjs-user-inactive, .ytp-autohide')) {
+      let el = video;
+      while (el && el !== document) {
+        const style = window.getComputedStyle(el);
+        if (style.cursor === 'none') {
           cursorIsNone = true;
+          break;
         }
+        if (el.className && typeof el.className === 'string' && el.className.includes('inactive')) {
+          cursorIsNone = true;
+          break;
+        }
+        el = el.parentNode;
+      }
 
-        isUiActive = !cursorIsNone;
+      if (document.body.className && typeof document.body.className === 'string' &&
+        (document.body.className.includes('inactive') || document.body.className.includes('hide-cursor'))) {
+        cursorIsNone = true;
+      }
+
+      // Often elements have aria-hidden true when UI is inactive
+      if (document.querySelector('.controls-inactive, .vjs-user-inactive, .ytp-autohide')) {
+        cursorIsNone = true;
+      }
+
+      isUiActive = !cursorIsNone;
     }
 
     if (isUiActive) {
-        overlayContainer.style.opacity = '1';
-        overlayContainer.style.pointerEvents = 'auto';
+      overlayContainer.style.opacity = '1';
+      overlayContainer.style.pointerEvents = 'auto';
     } else {
-        overlayContainer.style.opacity = '0';
-        overlayContainer.style.pointerEvents = 'none';
-        resText.style.display = 'none';
+      overlayContainer.style.opacity = '0';
+      overlayContainer.style.pointerEvents = 'none';
+      resText.style.display = 'none';
     }
   }, 500);
 
