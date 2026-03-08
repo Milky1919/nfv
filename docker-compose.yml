@@ -17,6 +17,7 @@ services:
       - sunshine_config:/home/sunshine/.config/sunshine
       - chrome_profile:/home/sunshine/.config/google-chrome
       - /dev/shm:/dev/shm
+      - /dev/input:/dev/input
     deploy:
       resources:
         limits:
@@ -26,6 +27,8 @@ services:
     cap_add:
       - SYS_ADMIN
       - NET_ADMIN
+    group_add:
+      - "996"
     ipc: host
     healthcheck:
       test: [ "CMD-SHELL", "pgrep -f 'sunshine' && pgrep -f 'chrome' && pgrep -f 'Xorg' && sudo -u sunshine pactl info" ]
