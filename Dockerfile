@@ -1,4 +1,4 @@
-FROM ghcr.io/lizardbyte/sunshine:latest
+FROM ghcr.io/lizardbyte/sunshine:v0.23.1
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Tokyo
