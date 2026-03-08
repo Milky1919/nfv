@@ -17,14 +17,12 @@ services:
       - sunshine_config:/home/sunshine/.config/sunshine
       - chrome_profile:/home/sunshine/.config/google-chrome
       - /dev/shm:/dev/shm
-      - /run/udev:/run/udev:ro
     deploy:
       resources:
         limits:
           memory: 4g
     devices:
       - /dev/uinput:/dev/uinput
-      - /dev/input:/dev/input
     cap_add:
       - SYS_ADMIN
       - NET_ADMIN
