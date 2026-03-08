@@ -18,7 +18,7 @@ RUN set -x && \
     xserver-xorg-core xserver-xorg-video-dummy xserver-xorg-input-libinput \
     udev fluxbox pulseaudio wget curl unzip git inotify-tools psmisc \
     x11-utils jq ca-certificates sudo arping nano gnupg binutils \
-    libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 || true && \
+    libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 fonts-noto-cjk || true && \
     dpkg --configure -a || true && \
     which Xorg udevadm fluxbox pulseaudio && \
     echo "Package installation completed - binaries verified" && \
@@ -45,13 +45,6 @@ RUN echo 'KERNEL=="uinput", SUBSYSTEM=="misc", OPTIONS+="static_node=uinput", TA
     > /etc/udev/rules.d/60-sunshine.rules
 
 
-# Widevine L3 DRMモジュールの抽出と配置（公式debから展開）
-RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    ar x google-chrome-stable_current_amd64.deb && \
-    tar -xf data.tar.xz && \
-    mkdir -p /opt/google/chrome/WidevineCdm && \
-    cp -r opt/google/chrome/WidevineCdm/* /opt/google/chrome/WidevineCdm/ || true && \
-    rm -rf google-chrome-stable_current_amd64.deb data.tar.xz control.tar.xz debian-binary opt etc
 
 # Chrome拡張機能の配置ディレクトリ作成
 RUN mkdir -p /opt/extensions

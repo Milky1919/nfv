@@ -65,18 +65,16 @@ sudo -u sunshine bash -c 'DISPLAY=:99 PULSE_SERVER=unix:/tmp/pulseaudio.socket s
 sleep 5
 
 # 10. Google Chrome (キオスクモード)
-echo "[Init] Starting Google Chrome with Extensions and UserAgent..."
+echo "[Init] Starting Google Chrome with Extensions..."
 # 環境変数読み込み
 START_URL=${CHROME_START_URL:-"https://www.netflix.com/browse"}
 EXTENSIONS="/opt/extensions/ublock-lite,/opt/extensions/netflix-1080p,/opt/extensions/auto-skip"
-CHROME_OS_UA="Mozilla/5.0 (X11; CrOS x86_64 15509.89.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 sudo -u sunshine bash -c "
 export DISPLAY=:99
 export LIBVA_DRIVER_NAME=nvidia
 export VDPAU_DRIVER=nvidia
 google-chrome \
-  --user-agent='${CHROME_OS_UA}' \
   --kiosk '${START_URL}' \
   --force-device-scale-factor=1.0 \
   --disable-features=OverlayScrollbar \
