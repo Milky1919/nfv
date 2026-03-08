@@ -39,6 +39,7 @@ timeout 3 bash -c 'while ! xdpyinfo -display :99 >/dev/null 2>&1; do sleep 0.1; 
 echo "[Init] Starting PulseAudio..."
 sudo -u sunshine pulseaudio --start --exit-idle-time=-1
 sudo -u sunshine pactl load-module module-null-sink sink_name=DummySink sink_properties=device.description=DummySink
+sudo -u sunshine pactl set-default-sink DummySink
 
 echo "[Wait] Waiting for PulseAudio daemon..."
 timeout 3 bash -c 'while ! sudo -u sunshine pactl info >/dev/null 2>&1; do sleep 0.1; done' || { echo "PulseAudio timeout"; exit 1; }
@@ -59,7 +60,7 @@ fi
 
 # 9. Sunshine起動（DISPLAY設定はXorgの:99を使用）
 echo "[Init] Starting Sunshine Streaming Server..."
-sudo -u sunshine bash -c 'DISPLAY=:99 PULSE_SERVER=unix:/tmp/pulseaudio.socket sunshine &'
+sudo -u sunshine bash -c 'DISPLAY=:99 sunshine &'
 
 # Sunshineの初期化待機（API疎通確認やログ待機は暫定でSleep）
 sleep 5
