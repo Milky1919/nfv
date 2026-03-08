@@ -29,7 +29,9 @@ services:
       - SYS_ADMIN
       - NET_ADMIN
     group_add:
-      - "996"
+      - "44"   # video group (for /dev/dri/card0 access)
+      - "993"  # render group (for GPU rendering)
+      - "996"  # existing group
     ipc: host
     healthcheck:
       test: [ "CMD-SHELL", "pgrep -f 'sunshine' && pgrep -f 'chrome' && pgrep -f 'Xorg' && sudo -u sunshine pactl info" ]
