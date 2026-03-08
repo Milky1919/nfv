@@ -22,6 +22,10 @@ echo "[Init] udevd started."
 chmod 666 /dev/uinput || true
 
 # 4. Xorg + dummyドライバー（inputtinoの仮想入力デバイスを認識可能）
+echo "[Init] Cleaning up old Xorg locks..."
+rm -f /tmp/.X99-lock
+rm -rf /tmp/.X11-unix
+
 echo "[Init] Starting Xorg with dummy driver..."
 Xorg :99 -config /etc/X11/xorg.conf -ac -noreset -novtswitch -sharevts -keeptty +extension RANDR +extension GLX &
 export DISPLAY=:99
@@ -55,10 +59,6 @@ cp /opt/chrome.desktop /home/sunshine/Desktop/chrome.desktop
 chown -R sunshine:sunshine /home/sunshine/Desktop
 chmod +x /home/sunshine/Desktop/chrome.desktop
 
-# Start Picom Compositor (to prevent screen tearing)
-echo "[Init] Starting Picom compositor..."
-sudo -u sunshine bash -c 'DISPLAY=:99 picom -b --backend glx --vsync'
-
 # Start Fluxbox
 sudo -u sunshine bash -c 'DISPLAY=:99 fluxbox &'
 
@@ -67,6 +67,10 @@ sudo -u sunshine bash -c 'DISPLAY=:99 pcmanfm --desktop &'
 
 echo "[Wait] Waiting for Fluxbox..."
 timeout 3 bash -c 'while ! xdpyinfo -display :99 >/dev/null 2>&1; do sleep 0.1; done' || { echo "Fluxbox timeout"; exit 1; }
+
+# Start Picom Compositor (to prevent screen tearing)
+echo "[Init] Starting Picom compositor in background..."
+sudo -u sunshine bash -c 'DISPLAY=:99 picom --backend xrender > /tmp/picom.log 2>&1 &' || true
 
 # 6. PulseAudio (仮想オーディオとダミーシンク)
 echo "[Init] Starting PulseAudio..."
