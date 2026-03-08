@@ -108,6 +108,9 @@ origin_web_ui_allowed = wan
 # エンコーダー設定（NVIDIA GPU 使用）
 encoder = nvenc
 adapter_name = /dev/dri/card0
+
+# 出力デバイス設定（xrandr で表示される名前）
+output_name = DP-0
 EOF
   chown sunshine:sunshine "$SUNSHINE_CONF"
 fi
