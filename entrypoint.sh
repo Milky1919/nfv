@@ -32,10 +32,34 @@ timeout 5 bash -c 'while [ ! -S /tmp/.X11-unix/X99 ]; do sleep 0.1; done' || { e
 # 5. Fluxbox (ウィンドウマネージャー)
 echo "[Init] Starting Fluxbox..."
 mkdir -p /home/sunshine/.fluxbox
+
+# Fluxbox keybindings
 echo "F9 :Exec xdotool key ctrl+alt+shift+d" > /home/sunshine/.fluxbox/keys
+
+# Fluxbox menu for right-click
+cat > /home/sunshine/.fluxbox/menu << 'MENU_EOF'
+[begin] (Fluxbox)
+  [exec] (Google Chrome) {google-chrome --load-extension=/opt/extensions/ublock-lite,/opt/extensions/netflix-1080p,/opt/extensions/auto-skip,/opt/extensions/video-resolution-monitor --window-position=0,0 --window-size=1920,1080 --start-maximized --no-first-run --no-default-browser-check --disable-default-apps --password-store=basic --use-mock-keychain --force-device-scale-factor=1.0 --disable-features=OverlayScrollbar --disable-infobars --disable-gpu-vsync --enable-features=VaapiVideoDecoder --no-sandbox --disable-gpu-sandbox}
+  [separator]
+  [restart] (Restart)
+  [exit] (Exit)
+[end]
+MENU_EOF
+
 echo "session.screen0.rootCommand: " > /home/sunshine/.fluxbox/init
 chown -R sunshine:sunshine /home/sunshine/.fluxbox
+
+# Create Desktop directory and copy Chrome shortcut
+mkdir -p /home/sunshine/Desktop
+cp /opt/chrome.desktop /home/sunshine/Desktop/chrome.desktop
+chown -R sunshine:sunshine /home/sunshine/Desktop
+chmod +x /home/sunshine/Desktop/chrome.desktop
+
+# Start Fluxbox
 sudo -u sunshine bash -c 'DISPLAY=:99 fluxbox &'
+
+# Start PCManFM in desktop mode to show desktop icons
+sudo -u sunshine bash -c 'DISPLAY=:99 pcmanfm --desktop &'
 
 echo "[Wait] Waiting for Fluxbox..."
 timeout 3 bash -c 'while ! xdpyinfo -display :99 >/dev/null 2>&1; do sleep 0.1; done' || { echo "Fluxbox timeout"; exit 1; }

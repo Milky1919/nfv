@@ -18,7 +18,8 @@ RUN set -x && \
     xserver-xorg-core xserver-xorg-video-dummy xserver-xorg-input-libinput \
     udev fluxbox pulseaudio wget curl unzip git inotify-tools psmisc \
     x11-utils jq ca-certificates sudo arping nano gnupg binutils xvfb python3 \
-    libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 fonts-noto-cjk xdotool feh || true && \
+    libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 fonts-noto-cjk xdotool feh \
+    pcmanfm || true && \
     dpkg --configure -a || true && \
     which Xorg udevadm fluxbox pulseaudio && \
     echo "Package installation completed - binaries verified" && \
@@ -72,5 +73,9 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY vram-monitor.sh /usr/local/bin/vram-monitor.sh
 RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh /usr/local/bin/vram-monitor.sh && \
     chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/vram-monitor.sh
+
+# Desktop shortcut for Chrome
+COPY chrome.desktop /opt/chrome.desktop
+RUN chmod +x /opt/chrome.desktop
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
