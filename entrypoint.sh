@@ -55,6 +55,10 @@ cp /opt/chrome.desktop /home/sunshine/Desktop/chrome.desktop
 chown -R sunshine:sunshine /home/sunshine/Desktop
 chmod +x /home/sunshine/Desktop/chrome.desktop
 
+# Start Picom Compositor (to prevent screen tearing)
+echo "[Init] Starting Picom compositor..."
+sudo -u sunshine bash -c 'DISPLAY=:99 picom -b --backend glx --vsync'
+
 # Start Fluxbox
 sudo -u sunshine bash -c 'DISPLAY=:99 fluxbox &'
 

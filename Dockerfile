@@ -19,7 +19,7 @@ RUN set -x && \
     udev fluxbox pulseaudio wget curl unzip git inotify-tools psmisc \
     x11-utils jq ca-certificates sudo arping nano gnupg binutils xvfb python3 \
     libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 fonts-noto-cjk xdotool feh \
-    pcmanfm || true && \
+    pcmanfm picom || true && \
     dpkg --configure -a || true && \
     which Xorg udevadm fluxbox pulseaudio && \
     echo "Package installation completed - binaries verified" && \
