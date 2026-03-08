@@ -49,10 +49,10 @@ RUN echo 'KERNEL=="uinput", SUBSYSTEM=="misc", OPTIONS+="static_node=uinput", TA
 # Chrome拡張機能の配置ディレクトリ作成
 RUN mkdir -p /opt/extensions
 
-# Extensions 1: Netflix-1080p (truedread版)
-RUN wget -q https://github.com/truedread/netflix-1080p/archive/refs/tags/v1.22.zip -O netflix-1080p.zip && \
+# Extensions 1: Netflix-1080p (Puyodead1 fork - Enables 1080p and explicitly unblocks debug shortcuts)
+RUN wget -q https://github.com/Puyodead1/wv-netflix-extension/archive/refs/heads/master.zip -O netflix-1080p.zip && \
     unzip -q netflix-1080p.zip && \
-    mv netflix-1080p-1.22 /opt/extensions/netflix-1080p && \
+    mv wv-netflix-extension-master /opt/extensions/netflix-1080p && \
     rm netflix-1080p.zip
 
 # Extensions 2: Netflix-Prime-Auto-Skip (広告・イントロスキップ)
