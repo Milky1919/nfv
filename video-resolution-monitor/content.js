@@ -1,79 +1,156 @@
 (function () {
     const OVERLAY_ID = 'nfv-video-res-overlay';
-    let hideTimeout = null;
-
-    function createOverlay() {
-        let overlay = document.getElementById(OVERLAY_ID);
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.id = OVERLAY_ID;
-            overlay.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 6px 12px;
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        font-family: sans-serif;
-        font-size: 16px;
-        font-weight: bold;
-        border-radius: 4px;
-        z-index: 2147483647;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-        opacity: 0;
-        text-shadow: 1px 1px 2px #000;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-      `;
-            document.body.appendChild(overlay);
-        }
-        return overlay;
-    }
+    let overlayContainer = null;
+    let resText = null;
+    let resButton = null;
 
     function getVideoNode() {
         const vids = document.getElementsByTagName('video');
         for (const v of vids) {
-            if (!v.paused && v.videoWidth > 0) return v;
+            if (v.videoWidth > 0) return v;
         }
         return vids.length ? vids[0] : null;
     }
 
-    function showOverlay() {
-        const video = getVideoNode();
-        if (!video) return;
+    function initOverlay() {
+        if (document.getElementById(OVERLAY_ID)) return;
 
-        const overlay = createOverlay();
-        const w = video.videoWidth;
-        const h = video.videoHeight;
+        overlayContainer = document.createElement('div');
+        overlayContainer.id = OVERLAY_ID;
+        overlayContainer.style.cssText = `
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      z-index: 2147483647;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+    `;
 
-        if (w > 0 && h > 0) {
-            overlay.textContent = `📺 ${w}x${h}p`;
-        } else {
-            overlay.textContent = `📺 Loading...`;
+        resText = document.createElement('div');
+        resText.style.cssText = `
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+      font-size: 22px;
+      font-weight: bold;
+      border: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+      display: none;
+      pointer-events: none;
+    `;
+
+        resButton = document.createElement('button');
+        resButton.textContent = 'ℹ️';
+        resButton.style.cssText = `
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      color: white;
+      font-size: 24px;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      pointer-events: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+      transition: transform 0.1s;
+    `;
+
+        resButton.onmousedown = () => resButton.style.transform = 'scale(0.9)';
+        resButton.onmouseup = () => resButton.style.transform = 'scale(1)';
+        resButton.onmouseleave = () => resButton.style.transform = 'scale(1)';
+
+        overlayContainer.appendChild(resText);
+        overlayContainer.appendChild(resButton);
+
+        const target = document.fullscreenElement || document.body;
+        if (target) {
+            target.appendChild(overlayContainer);
         }
 
-        overlay.style.opacity = '1';
-
-        clearTimeout(hideTimeout);
-        // Standard video UIs typically fade out after ~3 seconds of inactivity
-        hideTimeout = setTimeout(() => {
-            overlay.style.opacity = '0';
-        }, 3000);
-    }
-
-    // Bind to common interactions that trigger standard video UI to appear
-    document.addEventListener('click', showOverlay);
-    document.addEventListener('mousemove', showOverlay);
-    document.addEventListener('keydown', showOverlay);
-
-    // Periodically update the resolution while the overlay is visible
-    setInterval(() => {
-        const overlay = document.getElementById(OVERLAY_ID);
-        if (overlay && overlay.style.opacity === '1') {
+        resButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
             const video = getVideoNode();
             if (video && video.videoWidth > 0) {
-                overlay.textContent = `📺 ${video.videoWidth}x${video.videoHeight}p`;
+                resText.textContent = \`📺 \${video.videoWidth} x \${video.videoHeight}p\`;
+      } else {
+        resText.textContent = \`📺 Loading...\`;
+      }
+      resText.style.display = 'block';
+      
+      setTimeout(() => {
+        resText.style.display = 'none';
+      }, 4000);
+    }, true);
+  }
+
+  // Handle fullscreen changes
+  document.addEventListener('fullscreenchange', () => {
+    if (overlayContainer) {
+      const target = document.fullscreenElement || document.body;
+      if (target && overlayContainer.parentNode !== target) {
+        target.appendChild(overlayContainer);
+      }
+    }
+  });
+
+  // Main logic
+  setInterval(() => {
+    initOverlay();
+    if (!overlayContainer) return;
+    
+    const video = getVideoNode();
+    if (!video) {
+        overlayContainer.style.opacity = '0';
+        resButton.style.pointerEvents = 'none';
+        return;
+    }
+
+    let isUiActive = false;
+    let cursorIsNone = false;
+    
+    if (video.paused) {
+        isUiActive = true;
+    } else {
+        let el = video;
+        while(el && el !== document) {
+            const style = window.getComputedStyle(el);
+            if (style.cursor === 'none') {
+                cursorIsNone = true;
+                break;
             }
+            if (el.className && typeof el.className === 'string' && el.className.includes('inactive')) {
+                cursorIsNone = true;
+                break;
+            }
+            el = el.parentNode;
         }
-    }, 1000);
+
+        if (document.body.className && typeof document.body.className === 'string' && 
+            (document.body.className.includes('inactive') || document.body.className.includes('hide-cursor'))) {
+            cursorIsNone = true;
+        }
+
+        isUiActive = !cursorIsNone;
+    }
+
+    if (isUiActive) {
+        overlayContainer.style.opacity = '1';
+        resButton.style.pointerEvents = 'auto';
+    } else {
+        overlayContainer.style.opacity = '0';
+        resButton.style.pointerEvents = 'none';
+        resText.style.display = 'none';
+    }
+  }, 500);
+
 })();
