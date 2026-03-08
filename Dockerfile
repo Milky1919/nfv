@@ -62,10 +62,10 @@ RUN wget -q https://github.com/Puyodead1/wv-netflix-extension/archive/refs/heads
 RUN git clone https://github.com/Dreamlinerm/Netflix-Prime-Auto-Skip.git /opt/extensions/auto-skip
 
 # Extensions 3: uBlock Origin (Full MV2 version for advanced blocking)
-RUN curl -s https://api.github.com/repos/gorhill/uBlock/releases/latest | jq -r '.assets[] | select(.name | test("uBlock0_.*\\\\.chromium\\\\.zip$")) | .browser_download_url' | xargs wget -q -O uBlock0.chromium.zip && \
+RUN curl -s https://api.github.com/repos/gorhill/uBlock/releases/latest | jq -r '.assets[] | select(.name | endswith("chromium.zip")) | .browser_download_url' > /tmp/ublock_url.txt && \
+    wget -q -i /tmp/ublock_url.txt -O uBlock0.chromium.zip && \
     unzip -q uBlock0.chromium.zip -d /opt/extensions/ublock-origin && \
-    rm uBlock0.chromium.zip
-
+    rm uBlock0.chromium.zip /tmp/ublock_url.txt
 # Extensions 4: Video Resolution Monitor (custom extension for UI)
 COPY video-resolution-monitor /opt/extensions/video-resolution-monitor
 # (CRX packaging step removed as we use --load-extension instead)
