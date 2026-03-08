@@ -105,15 +105,9 @@ if [ ! -f "$SUNSHINE_CONF" ]; then
 # Web UI アクセス設定
 origin_web_ui_allowed = wan
 
-# キャプチャ設定（X11 を明示的に指定）
-capture = x11
-
 # エンコーダー設定（NVIDIA GPU 使用）
 encoder = nvenc
 adapter_name = /dev/dri/card0
-
-# 出力設定
-output_name = 0
 EOF
   chown sunshine:sunshine "$SUNSHINE_CONF"
 fi
