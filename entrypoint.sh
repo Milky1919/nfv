@@ -91,6 +91,14 @@ google-chrome \
   --load-extension='${EXTENSIONS}' \
   --window-position=0,0 \
   --window-size=1920,1080 \
+  --start-maximized \
+  --kiosk \
+  --no-first-run \
+  --no-default-browser-check \
+  --disable-default-apps \
+  --disable-popup-blocking \
+  --password-store=basic \
+  --use-mock-keychain \
   --force-device-scale-factor=1.0 \
   --disable-features=OverlayScrollbar \
   --disable-infobars \
