@@ -33,6 +33,7 @@ timeout 5 bash -c 'while [ ! -S /tmp/.X11-unix/X99 ]; do sleep 0.1; done' || { e
 echo "[Init] Starting Fluxbox..."
 mkdir -p /home/sunshine/.fluxbox
 echo "F9 :Exec xdotool key ctrl+alt+shift+d" > /home/sunshine/.fluxbox/keys
+echo "session.screen0.rootCommand: " > /home/sunshine/.fluxbox/init
 chown -R sunshine:sunshine /home/sunshine/.fluxbox
 sudo -u sunshine bash -c 'DISPLAY=:99 fluxbox &'
 
