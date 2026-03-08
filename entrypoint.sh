@@ -78,25 +78,20 @@ START_URL=${CHROME_START_URL:-"https://www.netflix.com/browse"}
 # 必要な全拡張機能のパスをカンマ区切りで作成
 EXTENSIONS="/opt/extensions/ublock-lite,/opt/extensions/netflix-1080p,/opt/extensions/auto-skip,/opt/extensions/video-resolution-monitor"
 
-# Chrome起動（Xvfbを使用して仮想ディスプレイ上で通常モードとして実行。headlessで無効にされていた拡張機能読み込みを有効化）
+# Chrome起動（既存のXorg :99に直接接続。Sunshineが同じ:99を配信しているため必須）
 sudo -u sunshine bash -c "
 export DISPLAY=:99
 export LIBVA_DRIVER_NAME=nvidia
 export VDPAU_DRIVER=nvidia
-
-# --no-sandbox と --disable-gpu-sandbox はコンテナ内で必須。--kiosk等がないとフルスクリーンにならないがUIはデバッグで見れる
-xvfb-run --server-args='-screen 0 1920x1080x24' \
 google-chrome \
   '${START_URL}' \
   --load-extension='${EXTENSIONS}' \
   --window-position=0,0 \
   --window-size=1920,1080 \
   --start-maximized \
-  --kiosk \
   --no-first-run \
   --no-default-browser-check \
   --disable-default-apps \
-  --disable-popup-blocking \
   --password-store=basic \
   --use-mock-keychain \
   --force-device-scale-factor=1.0 \
