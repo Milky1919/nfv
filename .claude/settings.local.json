@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:deepwiki.com)",
+      "WebFetch(domain:docs.lizardbyte.dev)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:games-on-whales.github.io)",
+      "WebFetch(domain:neko.m1k1o.net)",
+      "WebFetch(domain:hub.docker.com)"
+    ]
+  }
+}

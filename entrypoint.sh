@@ -9,22 +9,28 @@ mkdir -p /home/sunshine/.config/google-chrome || true
 chown -R sunshine:sunshine /home/sunshine || true
 echo "[Init] Permissions configured for sunshine user."
 
-# 2. Xvfb (仮想ディスプレイ、-acでアクセス制御無効化)
-echo "[Init] Starting Xvfb..."
-sudo -u sunshine Xvfb :99 -screen 0 1920x1080x24 -nolisten tcp -ac &
+# 2. udevd起動（inputtinoが作成する仮想入力デバイスの検出に必須）
+echo "[Init] Starting udevd..."
+udevd --daemon || true
+udevadm trigger || true
+echo "[Init] udevd started."
+
+# 3. Xorg + dummyドライバー（inputtinoの仮想入力デバイスを認識可能）
+echo "[Init] Starting Xorg with dummy driver..."
+Xorg :99 -config /etc/X11/xorg.conf -ac -noreset +extension RANDR +extension GLX &
 export DISPLAY=:99
 
-echo "[Wait] Waiting for Xvfb socket..."
-timeout 5 bash -c 'while [ ! -S /tmp/.X11-unix/X99 ]; do sleep 0.1; done' || { echo "Xvfb socket timeout"; exit 1; }
+echo "[Wait] Waiting for Xorg socket..."
+timeout 5 bash -c 'while [ ! -S /tmp/.X11-unix/X99 ]; do sleep 0.1; done' || { echo "Xorg socket timeout"; exit 1; }
 
-# 3. Fluxbox (ウィンドウマネージャー)
+# 4. Fluxbox (ウィンドウマネージャー)
 echo "[Init] Starting Fluxbox..."
 sudo -u sunshine bash -c 'DISPLAY=:99 fluxbox &'
 
 echo "[Wait] Waiting for Fluxbox..."
 timeout 3 bash -c 'while ! xdpyinfo -display :99 >/dev/null 2>&1; do sleep 0.1; done' || { echo "Fluxbox timeout"; exit 1; }
 
-# 4. PulseAudio (仮想オーディオとダミーシンク)
+# 5. PulseAudio (仮想オーディオとダミーシンク)
 echo "[Init] Starting PulseAudio..."
 sudo -u sunshine pulseaudio --start --exit-idle-time=-1
 sudo -u sunshine pactl load-module module-null-sink sink_name=DummySink sink_properties=device.description=DummySink
@@ -32,14 +38,14 @@ sudo -u sunshine pactl load-module module-null-sink sink_name=DummySink sink_pro
 echo "[Wait] Waiting for PulseAudio daemon..."
 timeout 3 bash -c 'while ! sudo -u sunshine pactl info >/dev/null 2>&1; do sleep 0.1; done' || { echo "PulseAudio timeout"; exit 1; }
 
-# 5. VRAM監視スクリプトのバックグラウンド実行
+# 6. VRAM監視スクリプトのバックグラウンド実行
 echo "[Init] Starting VRAM Monitor..."
 /usr/local/bin/vram-monitor.sh &
 
-# 6. /dev/uinput の権限開放（Sunshineの仮想入力デバイス作成に必要）
+# 7. /dev/uinput の権限開放（Sunshineの仮想入力デバイス作成に必要）
 chmod 666 /dev/uinput || true
 
-# 7. Sunshineの設定ファイル生成（初回のみ）
+# 8. Sunshineの設定ファイル生成（初回のみ）
 SUNSHINE_CONF="/home/sunshine/.config/sunshine/sunshine.conf"
 if [ ! -f "$SUNSHINE_CONF" ]; then
   echo "[Init] Creating default sunshine.conf..."
@@ -49,14 +55,14 @@ EOF
   chown sunshine:sunshine "$SUNSHINE_CONF"
 fi
 
-# 7. Sunshine起動
+# 9. Sunshine起動
 echo "[Init] Starting Sunshine Streaming Server..."
 sudo -u sunshine bash -c 'DISPLAY=:99 PULSE_SERVER=unix:/tmp/pulseaudio.socket sunshine &'
 
 # Sunshineの初期化待機（API疎通確認やログ待機は暫定でSleep）
 sleep 5
 
-# 7. Google Chrome (キオスクモード)
+# 10. Google Chrome (キオスクモード)
 echo "[Init] Starting Google Chrome with Extensions and UserAgent..."
 # 環境変数読み込み
 START_URL=${CHROME_START_URL:-"https://www.netflix.com/browse"}

@@ -17,6 +17,7 @@ services:
       - sunshine_config:/home/sunshine/.config/sunshine
       - chrome_profile:/home/sunshine/.config/google-chrome
       - /dev/shm:/dev/shm
+      - /run/udev:/run/udev:ro
     deploy:
       resources:
         limits:
@@ -29,7 +30,7 @@ services:
       - NET_ADMIN
     ipc: host
     healthcheck:
-      test: [ "CMD-SHELL", "pgrep -f 'sunshine' && pgrep -f 'chrome' && pgrep -f 'Xvfb' && sudo -u sunshine pactl info" ]
+      test: [ "CMD-SHELL", "pgrep -f 'sunshine' && pgrep -f 'chrome' && pgrep -f 'Xorg' && sudo -u sunshine pactl info" ]
       interval: 30s
       timeout: 10s
       retries: 3

@@ -12,7 +12,8 @@ RUN groupadd -f render && \
 
 # 依存パッケージおよびツール群のインストール
 RUN apt-get update && apt-get install -y \
-    xvfb fluxbox pulseaudio wget curl unzip git inotify-tools psmisc \
+    xserver-xorg-core xserver-xorg-video-dummy xserver-xorg-input-libinput \
+    udev fluxbox pulseaudio wget curl unzip git inotify-tools psmisc \
     x11-utils jq ca-certificates sudo arping nano gnupg binutils \
     libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 \
     && rm -rf /var/lib/apt/lists/*
@@ -27,6 +28,9 @@ RUN mkdir -p /etc/apt/keyrings && \
 # sudoのパスワードなし実行を許可（起動スクリプト内での権限切り替え用）
 RUN echo "sunshine ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+# Xorg設定の配置とXwrapper許可（非rootユーザーでXorg起動可能にする）
+COPY xorg.conf /etc/X11/xorg.conf
+RUN mkdir -p /etc/X11 && echo "allowed_users = anybody" > /etc/X11/Xwrapper.config
 
 
 # Widevine L3 DRMモジュールの抽出と配置（公式debから展開）
