@@ -7,8 +7,9 @@ USER root
 
 # 非特権ユーザーの作成とグループ所属
 RUN groupadd -f render && \
+    groupadd -f input && \
     useradd -m -s /bin/bash sunshine && \
-    usermod -aG video,audio,render sunshine
+    usermod -aG video,audio,render,input sunshine
 
 # 依存パッケージおよびツール群のインストール
 RUN apt-get update && apt-get install -y \
@@ -31,6 +32,10 @@ RUN echo "sunshine ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 # Xorg設定の配置とXwrapper許可（非rootユーザーでXorg起動可能にする）
 COPY xorg.conf /etc/X11/xorg.conf
 RUN mkdir -p /etc/X11 && echo "allowed_users = anybody" > /etc/X11/Xwrapper.config
+
+# udevルール（inputtinoが作成する仮想入力デバイスの権限設定）
+RUN echo 'KERNEL=="uinput", SUBSYSTEM=="misc", OPTIONS+="static_node=uinput", TAG+="uaccess", GROUP="input", MODE="0660"' \
+    > /etc/udev/rules.d/60-sunshine.rules
 
 
 # Widevine L3 DRMモジュールの抽出と配置（公式debから展開）

@@ -11,26 +11,31 @@ echo "[Init] Permissions configured for sunshine user."
 
 # 2. udevd起動（inputtinoが作成する仮想入力デバイスの検出に必須）
 echo "[Init] Starting udevd..."
-udevd --daemon || true
+/lib/systemd/systemd-udevd --daemon || true
+sleep 1
+udevadm control --reload-rules || true
 udevadm trigger || true
 echo "[Init] udevd started."
 
-# 3. Xorg + dummyドライバー（inputtinoの仮想入力デバイスを認識可能）
+# 3. /dev/uinput の権限開放（Sunshineの仮想入力デバイス作成に必要）
+chmod 666 /dev/uinput || true
+
+# 4. Xorg + dummyドライバー（inputtinoの仮想入力デバイスを認識可能）
 echo "[Init] Starting Xorg with dummy driver..."
-Xorg :99 -config /etc/X11/xorg.conf -ac -noreset +extension RANDR +extension GLX &
+Xorg :99 -config /etc/X11/xorg.conf -ac -noreset -novtswitch -sharevts -keeptty +extension RANDR +extension GLX &
 export DISPLAY=:99
 
 echo "[Wait] Waiting for Xorg socket..."
 timeout 5 bash -c 'while [ ! -S /tmp/.X11-unix/X99 ]; do sleep 0.1; done' || { echo "Xorg socket timeout"; exit 1; }
 
-# 4. Fluxbox (ウィンドウマネージャー)
+# 5. Fluxbox (ウィンドウマネージャー)
 echo "[Init] Starting Fluxbox..."
 sudo -u sunshine bash -c 'DISPLAY=:99 fluxbox &'
 
 echo "[Wait] Waiting for Fluxbox..."
 timeout 3 bash -c 'while ! xdpyinfo -display :99 >/dev/null 2>&1; do sleep 0.1; done' || { echo "Fluxbox timeout"; exit 1; }
 
-# 5. PulseAudio (仮想オーディオとダミーシンク)
+# 6. PulseAudio (仮想オーディオとダミーシンク)
 echo "[Init] Starting PulseAudio..."
 sudo -u sunshine pulseaudio --start --exit-idle-time=-1
 sudo -u sunshine pactl load-module module-null-sink sink_name=DummySink sink_properties=device.description=DummySink
@@ -38,12 +43,9 @@ sudo -u sunshine pactl load-module module-null-sink sink_name=DummySink sink_pro
 echo "[Wait] Waiting for PulseAudio daemon..."
 timeout 3 bash -c 'while ! sudo -u sunshine pactl info >/dev/null 2>&1; do sleep 0.1; done' || { echo "PulseAudio timeout"; exit 1; }
 
-# 6. VRAM監視スクリプトのバックグラウンド実行
+# 7. VRAM監視スクリプトのバックグラウンド実行
 echo "[Init] Starting VRAM Monitor..."
 /usr/local/bin/vram-monitor.sh &
-
-# 7. /dev/uinput の権限開放（Sunshineの仮想入力デバイス作成に必要）
-chmod 666 /dev/uinput || true
 
 # 8. Sunshineの設定ファイル生成（初回のみ）
 SUNSHINE_CONF="/home/sunshine/.config/sunshine/sunshine.conf"
@@ -55,7 +57,7 @@ EOF
   chown sunshine:sunshine "$SUNSHINE_CONF"
 fi
 
-# 9. Sunshine起動
+# 9. Sunshine起動（DISPLAY設定はXorgの:99を使用）
 echo "[Init] Starting Sunshine Streaming Server..."
 sudo -u sunshine bash -c 'DISPLAY=:99 PULSE_SERVER=unix:/tmp/pulseaudio.socket sunshine &'
 
