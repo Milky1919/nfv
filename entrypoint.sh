@@ -101,9 +101,9 @@ EOF
   chown sunshine:sunshine "$SUNSHINE_CONF"
 fi
 
-# 10. Sunshine起動（DISPLAY設定はXorgの:99を使用）
+# 10. Sunshine起動（DISPLAY設定はXorgの:99を使用、X11モードを強制）
 echo "[Init] Starting Sunshine Streaming Server..."
-sudo -u sunshine bash -c 'DISPLAY=:99 sunshine &'
+sudo -u sunshine bash -c 'DISPLAY=:99 WAYLAND_DISPLAY="" sunshine &'
 
 # Sunshineの初期化待機（API疎通確認やログ待機は暫定でSleep）
 sleep 5

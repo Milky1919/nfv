@@ -14,7 +14,8 @@
       "Bash(docker-compose build:*)",
       "Bash(docker-compose up:*)",
       "Bash(nvidia-smi:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(ssh:*)"
     ]
   }
 }
