@@ -74,7 +74,7 @@ sleep 5
 echo "[Init] Starting Google Chrome with Extensions..."
 # 環境変数読み込み
 START_URL=${CHROME_START_URL:-"https://www.netflix.com/browse"}
-EXTENSIONS="/opt/extensions/ublock-lite,/opt/extensions/netflix-1080p,/opt/extensions/auto-skip"
+EXTENSIONS="/opt/extensions/ublock-lite,/opt/extensions/netflix-1080p,/opt/extensions/auto-skip,/opt/extensions/video-resolution-monitor"
 
 sudo -u sunshine bash -c "
 export DISPLAY=:99

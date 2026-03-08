@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "Video Resolution Monitor",
+    "version": "1.0",
+    "description": "Shows current video resolution when the video UI is active.",
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "run_at": "document_end"
+        }
+    ]
+}

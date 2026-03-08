@@ -63,6 +63,9 @@ RUN curl -s https://api.github.com/repos/uBlockOrigin/uBOL-home/releases/latest 
     unzip -q uBOLite.chromium.zip -d /opt/extensions/ublock-lite && \
     rm uBOLite.chromium.zip
 
+# Extensions 4: Video Resolution Monitor (custom extension for UI)
+COPY video-resolution-monitor /opt/extensions/video-resolution-monitor
+
 # スクリプトのコピーと権限付与
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY vram-monitor.sh /usr/local/bin/vram-monitor.sh
