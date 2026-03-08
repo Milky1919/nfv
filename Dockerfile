@@ -18,8 +18,8 @@ RUN set -x && \
     xserver-xorg-core xserver-xorg-video-dummy xserver-xorg-input-libinput \
     udev fluxbox pulseaudio wget curl unzip git inotify-tools psmisc \
     x11-utils jq ca-certificates sudo arping nano gnupg binutils \
-    libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 || \
-    (echo "Package post-install scripts failed (expected in Docker build)" && exit 0) && \
+    libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 || true && \
+    dpkg --configure -a || true && \
     which Xorg udevadm fluxbox pulseaudio && \
     echo "Package installation completed - binaries verified" && \
     rm -rf /var/lib/apt/lists/*
