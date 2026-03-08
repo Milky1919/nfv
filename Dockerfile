@@ -12,13 +12,15 @@ RUN groupadd -f render && \
     usermod -aG video,audio,render,input sunshine
 
 # 依存パッケージおよびツール群のインストール
-RUN apt-get update && \
+RUN set -x && \
+    apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     xserver-xorg-core xserver-xorg-video-dummy xserver-xorg-input-libinput \
     udev fluxbox pulseaudio wget curl unzip git inotify-tools psmisc \
     x11-utils jq ca-certificates sudo arping nano gnupg binutils \
-    libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 \
-    && rm -rf /var/lib/apt/lists/*
+    libva2 libva-drm2 libva-x11-2 libvdpau1 libnuma1 && \
+    echo "Package installation completed successfully" && \
+    rm -rf /var/lib/apt/lists/*
 
 # Google Chromeのインストール
 RUN mkdir -p /etc/apt/keyrings && \
