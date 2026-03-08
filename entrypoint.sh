@@ -6,6 +6,7 @@ echo "[Init] System starting..."
 # 1. パーミッションの自動リカバリとボリューム準備
 mkdir -p /home/sunshine/.config/sunshine || true
 mkdir -p /home/sunshine/.config/google-chrome || true
+chown -R sunshine:sunshine /home/sunshine/.config || true
 chown -R sunshine:sunshine /home/sunshine || true
 echo "[Init] Permissions configured for sunshine user."
 
@@ -30,6 +31,9 @@ timeout 5 bash -c 'while [ ! -S /tmp/.X11-unix/X99 ]; do sleep 0.1; done' || { e
 
 # 5. Fluxbox (ウィンドウマネージャー)
 echo "[Init] Starting Fluxbox..."
+mkdir -p /home/sunshine/.fluxbox
+echo "" > /home/sunshine/.fluxbox/keys
+chown -R sunshine:sunshine /home/sunshine/.fluxbox
 sudo -u sunshine bash -c 'DISPLAY=:99 fluxbox &'
 
 echo "[Wait] Waiting for Fluxbox..."

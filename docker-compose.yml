@@ -24,6 +24,7 @@ services:
           memory: 4g
     devices:
       - /dev/uinput:/dev/uinput
+      - /dev/dri:/dev/dri
     cap_add:
       - SYS_ADMIN
       - NET_ADMIN
