@@ -43,6 +43,9 @@ RUN echo "sunshine ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 COPY xorg.conf /etc/X11/xorg.conf
 RUN mkdir -p /etc/X11 && echo "allowed_users = anybody" > /etc/X11/Xwrapper.config
 
+# Picom設定ファイルの配置
+COPY picom.conf /etc/picom.conf
+
 # udevルール（inputtinoが作成する仮想入力デバイスの権限設定）
 RUN echo 'KERNEL=="uinput", SUBSYSTEM=="misc", OPTIONS+="static_node=uinput", TAG+="uaccess", GROUP="input", MODE="0660"' \
     > /etc/udev/rules.d/60-sunshine.rules
@@ -56,7 +59,7 @@ RUN mkdir -p /opt/extensions
 RUN wget -q https://github.com/Puyodead1/wv-netflix-extension/archive/refs/heads/master.zip -O netflix-1080p.zip && \
     unzip -q netflix-1080p.zip && \
     mv wv-netflix-extension-master /opt/extensions/netflix-1080p && \
-    rm netflix-1080p.zip
+    rm netflix-1080p.zip || true
 
 # Extensions 2: Netflix-Prime-Auto-Skip (広告・イントロスキップ)
 RUN git clone https://github.com/Dreamlinerm/Netflix-Prime-Auto-Skip.git /opt/extensions/auto-skip

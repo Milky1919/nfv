@@ -9,7 +9,10 @@
       "WebFetch(domain:neko.m1k1o.net)",
       "WebFetch(domain:hub.docker.com)",
       "Bash(docker exec:*)",
-      "Bash(docker ps:*)"
+      "Bash(docker ps:*)",
+      "Bash(docker-compose down:*)",
+      "Bash(docker-compose build:*)",
+      "Bash(docker-compose up:*)"
     ]
   }
 }

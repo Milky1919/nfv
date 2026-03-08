@@ -70,7 +70,7 @@ timeout 3 bash -c 'while ! xdpyinfo -display :99 >/dev/null 2>&1; do sleep 0.1; 
 
 # Start Picom Compositor (to prevent screen tearing)
 echo "[Init] Starting Picom compositor in background..."
-sudo -u sunshine bash -c 'DISPLAY=:99 picom --backend xrender > /tmp/picom.log 2>&1 &' || true
+sudo -u sunshine bash -c 'DISPLAY=:99 picom --config /etc/picom.conf > /tmp/picom.log 2>&1 &' || true
 
 # 6. PulseAudio (仮想オーディオとダミーシンク)
 echo "[Init] Starting PulseAudio..."
@@ -129,7 +129,9 @@ google-chrome \
   --force-device-scale-factor=1.0 \
   --disable-features=OverlayScrollbar \
   --disable-infobars \
-  --disable-gpu-vsync \
+  --enable-gpu-vsync \
+  --disable-frame-rate-limit \
+  --enable-zero-copy \
   --enable-features=VaapiVideoDecoder \
   --no-sandbox \
   --disable-gpu-sandbox \
