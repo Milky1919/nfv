@@ -55,7 +55,7 @@ echo "F9 :Exec xdotool key ctrl+alt+shift+d" > /home/sunshine/.fluxbox/keys
 # Fluxbox menu for right-click
 cat > /home/sunshine/.fluxbox/menu << 'MENU_EOF'
 [begin] (Fluxbox)
-  [exec] (Google Chrome) {google-chrome --load-extension=/opt/extensions/ublock-lite,/opt/extensions/netflix-1080p,/opt/extensions/auto-skip,/opt/extensions/video-resolution-monitor --window-position=0,0 --window-size=1920,1080 --start-maximized --no-first-run --no-default-browser-check --disable-default-apps --password-store=basic --use-mock-keychain --force-device-scale-factor=1.0 --disable-features=OverlayScrollbar --disable-infobars --enable-gpu-vsync --disable-frame-rate-limit --enable-zero-copy --enable-features=VaapiVideoDecoder --no-sandbox --disable-gpu-sandbox}
+  [exec] (Google Chrome) {google-chrome --load-extension=/opt/extensions/ublock-origin,/opt/extensions/netflix-1080p,/opt/extensions/auto-skip,/opt/extensions/video-resolution-monitor --window-position=0,0 --window-size=1920,1080 --start-maximized --no-first-run --no-default-browser-check --disable-default-apps --password-store=basic --use-mock-keychain --force-device-scale-factor=1.0 --disable-features=OverlayScrollbar --disable-infobars --enable-gpu-vsync --disable-frame-rate-limit --enable-zero-copy --enable-features=VaapiVideoDecoder --no-sandbox --disable-gpu-sandbox}
   [separator]
   [restart] (Restart)
   [exit] (Exit)
