@@ -165,6 +165,7 @@ google-chrome \
   --disable-frame-rate-limit \
   --enable-zero-copy \
   --enable-features=VaapiVideoDecoder \
+  --disable-features=AudioServiceSandbox \
   --no-sandbox \
   --disable-gpu-sandbox \
   --enable-logging \
