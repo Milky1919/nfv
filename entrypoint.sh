@@ -115,6 +115,9 @@ adapter_name = /dev/dri/card0
 
 # 出力デバイス設定（xrandr で表示される名前）
 output_name = DP-0
+
+# フレームレート設定（ティアリング防止のため60FPS固定）
+fps = 60
 EOF
   chown sunshine:sunshine "$SUNSHINE_CONF"
 fi
