@@ -90,12 +90,12 @@ sudo -u sunshine bash -c 'DISPLAY=:99 picom --config /etc/picom.conf > /tmp/pico
 
 # 8. PulseAudio (仮想オーディオとダミーシンク)
 echo "[Init] Starting PulseAudio..."
-sudo -u sunshine pulseaudio --start --exit-idle-time=-1
-sudo -u sunshine pactl load-module module-null-sink sink_name=DummySink sink_properties=device.description=DummySink
-sudo -u sunshine pactl set-default-sink DummySink
+sudo -u sunshine bash -c 'XDG_RUNTIME_DIR=/run/user/1001 pulseaudio --start --exit-idle-time=-1'
+sudo -u sunshine bash -c 'XDG_RUNTIME_DIR=/run/user/1001 pactl load-module module-null-sink sink_name=DummySink sink_properties=device.description=DummySink'
+sudo -u sunshine bash -c 'XDG_RUNTIME_DIR=/run/user/1001 pactl set-default-sink DummySink'
 
 echo "[Wait] Waiting for PulseAudio daemon..."
-timeout 3 bash -c 'while ! sudo -u sunshine pactl info >/dev/null 2>&1; do sleep 0.1; done' || { echo "PulseAudio timeout"; exit 1; }
+timeout 3 bash -c 'while ! sudo -u sunshine bash -c "XDG_RUNTIME_DIR=/run/user/1001 pactl info" >/dev/null 2>&1; do sleep 0.1; done' || { echo "PulseAudio timeout"; exit 1; }
 
 # 9. VRAM監視スクリプトのバックグラウンド実行
 echo "[Init] Starting VRAM Monitor..."
