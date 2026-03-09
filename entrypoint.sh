@@ -54,7 +54,10 @@ echo "[Init] Starting Fluxbox..."
 mkdir -p /home/sunshine/.fluxbox
 
 # Fluxbox keybindings
-echo "F9 :Exec xdotool key ctrl+alt+shift+d" > /home/sunshine/.fluxbox/keys
+cat > /home/sunshine/.fluxbox/keys << 'KEYS_EOF'
+F9 :Exec xdotool key ctrl+alt+shift+d
+F10 :Exec env DISPLAY=:99 XDG_RUNTIME_DIR=/run/user/1001 PULSE_SERVER=unix:/run/user/1001/pulse/native LIBVA_DRIVER_NAME=nvidia VDPAU_DRIVER=nvidia google-chrome --load-extension=/opt/extensions/ublock-origin,/opt/extensions/netflix-1080p,/opt/extensions/auto-skip,/opt/extensions/video-resolution-monitor --no-first-run --no-default-browser-check --disable-default-apps --password-store=basic --use-mock-keychain --disable-features=OverlayScrollbar,AudioServiceSandbox --disable-infobars --disable-gpu-vsync --enable-zero-copy --enable-features=VaapiVideoDecoder --no-sandbox --disable-gpu-sandbox
+KEYS_EOF
 
 # Fluxbox menu for right-click
 cat > /home/sunshine/.fluxbox/menu << 'MENU_EOF'
