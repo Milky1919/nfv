@@ -121,7 +121,7 @@ fi
 
 # 11. Sunshine起動（DISPLAY設定はXorgの:99を使用、X11モードを強制）
 echo "[Init] Starting Sunshine Streaming Server..."
-sudo -u sunshine bash -c 'DISPLAY=:99 WAYLAND_DISPLAY="" XDG_RUNTIME_DIR=/run/user/1001 sunshine > /tmp/sunshine.log 2>&1 &'
+sudo -u sunshine bash -c 'DISPLAY=:99 WAYLAND_DISPLAY="" XDG_RUNTIME_DIR=/run/user/1001 PULSE_SERVER=unix:/run/user/1001/pulse/native sunshine > /tmp/sunshine.log 2>&1 &'
 sleep 2
 # Sunshine が起動したか確認
 if ! pgrep -x sunshine > /dev/null; then
