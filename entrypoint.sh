@@ -143,6 +143,8 @@ EXTENSIONS="/opt/extensions/ublock-origin,/opt/extensions/netflix-1080p,/opt/ext
 # Chrome起動（既存のXorg :99に直接接続。Sunshineが同じ:99を配信しているため必須）
 sudo -u sunshine bash -c "
 export DISPLAY=:99
+export XDG_RUNTIME_DIR=/run/user/1001
+export PULSE_SERVER=unix:/run/user/1001/pulse/native
 export LIBVA_DRIVER_NAME=nvidia
 export VDPAU_DRIVER=nvidia
 google-chrome \
