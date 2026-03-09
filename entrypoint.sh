@@ -59,7 +59,7 @@ echo "F9 :Exec xdotool key ctrl+alt+shift+d" > /home/sunshine/.fluxbox/keys
 # Fluxbox menu for right-click
 cat > /home/sunshine/.fluxbox/menu << 'MENU_EOF'
 [begin] (Fluxbox)
-  [exec] (Google Chrome) {google-chrome --load-extension=/opt/extensions/ublock-origin,/opt/extensions/netflix-1080p,/opt/extensions/auto-skip,/opt/extensions/video-resolution-monitor --window-position=0,0 --window-size=1920,1080 --start-maximized --no-first-run --no-default-browser-check --disable-default-apps --password-store=basic --use-mock-keychain --force-device-scale-factor=1.0 --disable-features=OverlayScrollbar --disable-infobars --enable-gpu-vsync --enable-zero-copy --enable-features=VaapiVideoDecoder --no-sandbox --disable-gpu-sandbox}
+  [exec] (Google Chrome) {google-chrome --load-extension=/opt/extensions/ublock-origin,/opt/extensions/netflix-1080p,/opt/extensions/auto-skip,/opt/extensions/video-resolution-monitor --window-position=0,0 --window-size=1920,1080 --start-maximized --no-first-run --no-default-browser-check --disable-default-apps --password-store=basic --use-mock-keychain --force-device-scale-factor=1.0 --disable-features=OverlayScrollbar --disable-infobars --disable-gpu-vsync --enable-zero-copy --enable-features=VaapiVideoDecoder --no-sandbox --disable-gpu-sandbox}
   [separator]
   [restart] (Restart)
   [exit] (Exit)
@@ -84,9 +84,9 @@ sudo -u sunshine bash -c 'DISPLAY=:99 pcmanfm --desktop &'
 echo "[Wait] Waiting for Fluxbox..."
 timeout 3 bash -c 'while ! xdpyinfo -display :99 >/dev/null 2>&1; do sleep 0.1; done' || { echo "Fluxbox timeout"; exit 1; }
 
-# Start Picom Compositor (to prevent screen tearing)
-echo "[Init] Starting Picom compositor in background..."
-sudo -u sunshine bash -c 'DISPLAY=:99 picom --config /etc/picom.conf > /tmp/picom.log 2>&1 &' || true
+# Picom disabled - VSync handled by Moonlight client
+# echo "[Init] Starting Picom compositor in background..."
+# sudo -u sunshine bash -c 'DISPLAY=:99 picom --config /etc/picom.conf > /tmp/picom.log 2>&1 &' || true
 
 # 8. PulseAudio (仮想オーディオとダミーシンク)
 echo "[Init] Starting PulseAudio..."
@@ -161,7 +161,7 @@ google-chrome \
   --force-device-scale-factor=1.0 \
   --disable-features=OverlayScrollbar \
   --disable-infobars \
-  --enable-gpu-vsync \
+  --disable-gpu-vsync \
   --enable-zero-copy \
   --enable-features=VaapiVideoDecoder \
   --disable-features=AudioServiceSandbox \
